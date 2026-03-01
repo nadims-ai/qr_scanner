@@ -34,12 +34,18 @@ def get_local_ip():
     return IP
 
 def generate_qrs(custom_base_url=None):
+    import urllib.request
+    firebase_url = 'https://qr-scanner-dd1-default-rtdb.firebaseio.com/products.json'
+    
     # Load products
     try:
-        with open('products.json', 'r') as f:
-            products = json.load(f)
-    except FileNotFoundError:
-        print("Error: products.json not found in current directory.")
+        req = urllib.request.urlopen(firebase_url)
+        products = json.loads(req.read())
+        if not products:
+            print("No products found in Firebase.")
+            return
+    except Exception as e:
+        print(f"Error reading from Firebase: {e}")
         sys.exit(1)
 
     # Make output directory
