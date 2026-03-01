@@ -1,0 +1,74 @@
+{
+  "fridge1": {
+    "name": "Samsung 580L French Door Smart Refrigerator",
+    "brand": "Samsung",
+    "price": "85,990",
+    "image": "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&q=80&w=800",
+    "warranty": "1 Year Comprehensive, 10 Years on Compressor",
+    "features": [
+      "Twin Cooling Plus Technology",
+      "Convertible 5-in-1 Modes",
+      "Digital Inverter Compressor",
+      "SmartThings App Support"
+    ],
+    "specs": {
+      "Capacity": "580 Liters",
+      "Energy Rating": "3 Star",
+      "Defrost System": "Frost Free",
+      "Dimensions": "817x1776x715 mm"
+    }
+  },
+  "ac1": {
+    "name": "LG 1.5 Ton 5 Star AI Dual Inverter Split AC",
+    "brand": "LG",
+    "price": "45,490",
+    "image": "https://images.unsplash.com/photo-1585671569476-805ab384cefc?auto=format&fit=crop&q=80&w=800",
+    "warranty": "1 Year Comprehensive, 10 Years on Compressor",
+    "features": [
+      "AI Convertible 6-in-1 cooling",
+      "HD Filter with Anti Virus protection",
+      "Ocean Black Fin Anti-Corrosive",
+      "Smart Diagnosis"
+    ],
+    "specs": {
+      "Capacity": "1.5 Ton",
+      "Energy Rating": "5 Star",
+      "Cooling Power": "5000 W",
+      "Noise Level": "31 dB"
+    }
+  },
+  "tv1": {
+    "name": "Sony Bravia 139 cm (55 inches) 4K Ultra HD Smart LED Google TV",
+    "brand": "Sony",
+    "price": "64,990",
+    "image": "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&q=80&w=800",
+    "warranty": "1 Year Comprehensive Warranty",
+    "features": [
+      "X1 4K HDR Processor",
+      "Google TV with Voice Search",
+      "Dolby Audio Support",
+      "Apple AirPlay & HomeKit"
+    ],
+    "specs": {
+      "Screen Size": "55 Inches",
+      "Resolution": "4K Ultra HD (3840 x 2160)",
+      "Refresh Rate": "60 Hz",
+      "Connectivity": "3 HDMI, 2 USB"
+    }
+  },
+  "IND1": {
+    "name": "samsung fridge",
+    "brand": "samsung",
+    "price": "15,000",
+    "image": "file:///Users/nadims_mac/Downloads/samsung.webp",
+    "warranty": "2 years",
+    "features": [
+      "wifi connectd",
+      "compressor cooling"
+    ],
+    "specs": {
+      "Status": "Newly Added",
+      "Stock": "Available"
+    }
+  }
+}

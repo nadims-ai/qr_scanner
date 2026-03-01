@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Printable Smart Labels</title>
+    <link rel="stylesheet" href="labels.css">
+    <!-- QR Code Generator JS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+    <div class="controls">
+        <h2>Smart Retail - Label Generator</h2>
+        <p style="margin-bottom: 1rem;">Click Print to generate physical A4 stickers. Make sure "Background graphics" is
+            enabled in print settings.</p>
+        <button class="btn-print" onclick="window.print()">🖨️ Print Labels</button>
+    </div>
+
+    <div id="labels-container">
+        <!-- Labels will be injected here via JS -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('products.json');
+                const products = await response.json();
+
+                // Get local IP or Vercel URL
+                const currentOrigin = window.location.origin;
+
+                const container = document.getElementById('labels-container');
+
+                for (const [id, prod] of Object.entries(products)) {
+                    // Create base URL for QR code
+                    const productScanUrl = `${currentOrigin}/index.html?id=${id}`;
+
+                    // Simple logic to generate a fake MRP (+15% of price) if none exists
+                    const rawPriceStr = prod.price.replace(/,/g, '');
+                    const priceInt = parseInt(rawPriceStr, 10);
+                    const mrpInt = Math.floor(priceInt * 1.15);
+                    const mrpVal = mrpInt.toLocaleString('en-IN');
+                    const saveVal = (mrpInt - priceInt).toLocaleString('en-IN');
+
+                    // Extract specs dynamically
+                    let specsHtml = '';
+                    if (prod.specs) {
+                        for (const [key, val] of Object.entries(prod.specs)) {
+                            specsHtml += `<li><span class="spec-label">${key}:</span> <span class="spec-val">${val}</span></li>`;
+                        }
+                    }
+
+                    // Build Card DOM
+                    const card = document.createElement('div');
+                    card.className = 'price-tag';
+
+                    card.innerHTML = `
+                        <div class="tag-header">
+                            <div>${prod.brand}</div>
+                            <div>${prod.name}</div>
+                        </div>
+
+                        <div class="tag-pricing">
+                            <span class="rupee">₹</span>
+                            <span class="price-main">${prod.price}</span>
+                        </div>
+
+                        <div class="price-details">
+                            <div>PRICE WAS: <strong>₹${prod.price}</strong></div>
+                            <div>MRP: <strong>₹${mrpVal}</strong></div>
+                        </div>
+
+                        <div class="tag-specs-grid">
+                            <div class="spec-column">
+                                <h4>Features</h4>
+                                <ul class="spec-list">
+                                    ${specsHtml}
+                                </ul>
+                            </div>
+                            <div class="spec-column">
+                                <h4>Offer</h4>
+                                <div style="font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center; border: 2px dashed #999; padding: 0.5rem; border-radius: 4px;">
+                                    SAVE ₹${saveVal} !
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tag-footer">
+                            <div style="width: 60%;">
+                                <div class="mock-barcode"></div>
+                                <div style="font-size: 0.6rem; color: #666; font-family: monospace;">SKU: 880609${Math.floor(Math.random() * 100000)}</div>
+                                <div style="font-size: 0.5rem; color: #888; margin-top: 0.5rem;">SCANNABLE FOR FULL SPECS & WARRANTY</div>
+                            </div>
+                            
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div id="qr-${id}" class="qr-container"></div>
+                                <div class="scan-text">SCAN FOR<br>INFO</div>
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(card);
+
+                    // Generate the QR code inside the container we just created
+                    new QRCode(document.getElementById(`qr-${id}`), {
+                        text: productScanUrl,
+                        width: 100,
+                        height: 100,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                }
+
+            } catch (e) {
+                console.error("Error loading label data:", e);
+                document.getElementById('labels-container').innerHTML = "<p>Error loading product data. Is the server running?</p>";
+            }
+        });
+    </script>
+</body>
+
+</html>

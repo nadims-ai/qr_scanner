@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+:root {
+    --card-width: 10cm;
+    --card-height: 15cm;
+    --text-black: #111;
+    --text-gray: #555;
+    --border-color: #333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    padding: 2rem;
+    color: var(--text-black);
+}
+
+.controls {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.btn-print {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-print:hover {
+    background: #1d4ed8;
+}
+
+#labels-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* The physical printable card */
+.price-tag {
+    width: var(--card-width);
+    height: var(--card-height);
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 0.8cm 0.6cm;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header: Model & Brand */
+.tag-header {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--text-gray);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+/* Pricing Section */
+.tag-pricing {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+}
+
+.rupee {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-right: 0.2rem;
+}
+
+.price-main {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.price-details {
+    text-align: right;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.price-details div {
+    margin-bottom: 0.2rem;
+}
+
+.price-details strong {
+    font-weight: 700;
+}
+
+/* Specs Table Layout */
+.tag-specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.spec-column h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.2rem;
+}
+
+.spec-list {
+    list-style: none;
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.spec-list li {
+    display: flex;
+    align-items: flex-start;
+}
+
+.spec-label {
+    width: 40%;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.spec-val {
+    width: 60%;
+    font-weight: 700;
+}
+
+/* Footer & QR */
+.tag-footer {
+    margin-top: auto;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.qr-container {
+    width: 2.5cm;
+    height: 2.5cm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scan-text {
+    font-size: 0.6rem;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+}
+
+/* Mock Barcode */
+.mock-barcode {
+    height: 30px;
+    width: 100%;
+    background: repeating-linear-gradient(90deg,
+            #000,
+            #000 2px,
+            #fff 2px,
+            #fff 4px,
+            #000 4px,
+            #000 5px,
+            #fff 5px,
+            #fff 8px);
+    margin-bottom: 0.5rem;
+}
+
+/* PRINT MEDIA QUERIES */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .controls {
+        display: none;
+    }
+
+    /* Hide print button */
+
+    #labels-container {
+        display: block;
+        gap: 0;
+    }
+
+    .price-tag {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+        margin: 0;
+        margin-bottom: 1cm;
+        float: left;
+        margin-right: 0.5cm;
+    }
+
+    /* Print settings to fix cutoffs */
+    @page {
+        margin: 1cm;
+    }
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Retail - Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            padding: 2rem 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--card-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        .form-card {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .help-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--success);
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <h1 class="store-name">Smart Retail Admin Pivot</h1>
+    </header>
+
+    <div id="toast" class="toast">Product Added & QR Generated!</div>
+
+    <main class="admin-container">
+        <div class="product-info-card form-card">
+            <h2 class="product-title">Add New Product</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Fill out the details to add a new product. A QR
+                code will automatically be generated.</p>
+
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label>Product ID (Unique identifier, no spaces)</label>
+                    <input type="text" id="p-id" placeholder="e.g. fridge2, tv3" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="p-name" placeholder="Samsung 800L Smart Refrigerator" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Brand</label>
+                    <input type="text" id="p-brand" placeholder="Samsung" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Price (Formatted with commas)</label>
+                    <input type="text" id="p-price" placeholder="1,20,000" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Image URL (Remote link or local path)</label>
+                    <input type="url" id="p-image" placeholder="https://images.unsplash.com/photo-..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Warranty Terms</label>
+                    <input type="text" id="p-warranty" placeholder="1 Year Comprehensive" required>
+                </div>
+
+                <div class="specs-card"
+                    style="margin-left: -1.5rem; margin-right: -1.5rem; border-left: none; border-right: none; border-radius: 0;">
+                    <h3>Features (Comma separated)</h3>
+                    <textarea id="p-features" rows="3" placeholder="Smart Wifi, Frost Free, Voice Control"
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submit-btn">Add Product & Generate QR</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.textContent = "Saving...";
+            btn.disabled = true;
+
+            // Parse features string into array
+            const featuresInput = document.getElementById('p-features').value;
+            const featuresArray = featuresInput.split(',').map(item => item.trim()).filter(item => item !== "");
+
+            const productData = {
+                id: document.getElementById('p-id').value.trim(),
+                name: document.getElementById('p-name').value.trim(),
+                brand: document.getElementById('p-brand').value.trim(),
+                price: document.getElementById('p-price').value.trim(),
+                image: document.getElementById('p-image').value.trim(),
+                warranty: document.getElementById('p-warranty').value.trim(),
+                features: featuresArray,
+                specs: {
+                    "Status": "Newly Added",
+                    "Stock": "Available"
+                }
+            };
+
+            try {
+                // Send Post Request directly to our Python server
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+
+                if (response.ok) {
+                    // Show success
+                    const toast = document.getElementById('toast');
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
+
+                    // Reset form
+                    document.getElementById('add-product-form').reset();
+                } else {
+                    alert("Failed to save product.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error connecting to server. Is `server.py` running?");
+            } finally {
+                btn.textContent = "Add Product & Generate QR";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
