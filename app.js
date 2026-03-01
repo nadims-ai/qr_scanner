@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch('products.json');
+        const response = await fetch('https://qr-scanner-dd1-default-rtdb.firebaseio.com/products.json');
         if (!response.ok) throw new Error("Failed to load product data.");
         const products = await response.json();
 

@@ -167,9 +167,9 @@
             };
 
             try {
-                // Send Post Request directly to our Python server
-                const response = await fetch('/api/products', {
-                    method: 'POST',
+                // Send PUT Request directly to our Firebase Database
+                const response = await fetch(`https://qr-scanner-dd1-default-rtdb.firebaseio.com/products/${productData.id}.json`, {
+                    method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData)
                 });
