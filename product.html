@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app-container">
+        <header class="navbar">
+            <h1 class="store-name">Smart Retail</h1>
+        </header>
+        
+        <main id="content">
+            <div id="loader" class="loader">
+                <div class="spinner"></div>
+            </div>
+            
+            <div id="error-message" class="hidden">
+                <div class="error-icon">⚠️</div>
+                <h2>Product Not Found</h2>
+                <p>The QR code might be invalid or the product is no longer available.</p>
+            </div>
+
+            <div id="product-details" class="hidden">
+                <div class="image-gallery">
+                    <img id="product-image" src="" alt="Product Image" />
+                </div>
+                
+                <div class="product-info-card">
+                    <div class="brand-badge" id="product-brand"></div>
+                    <h2 id="product-name" class="product-title"></h2>
+                    <div class="price-container">
+                        <span class="currency">₹</span>
+                        <span id="product-price" class="price"></span>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="specs-card">
+                    <h3>Key Features</h3>
+                    <ul id="product-features" class="features-list"></ul>
+                </div>
+
+                <div class="specs-card">
+                    <h3>Specifications</h3>
+                    <div id="product-specs" class="specs-grid"></div>
+                </div>
+                
+                <div class="warranty-card">
+                    <div class="icon">🛡️</div>
+                    <div class="warranty-info">
+                        <h4>Warranty Details</h4>
+                        <p id="product-warranty"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

@@ -76,8 +76,12 @@
 </head>
 
 <body>
-    <header class="navbar">
+    <header class="navbar" style="display: flex; justify-content: space-between; align-items: center;">
         <h1 class="store-name">Smart Retail Admin Pivot</h1>
+        <button id="publish-btn"
+            style="background: var(--success); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🚀 Publish to Live Site</span>
+        </button>
     </header>
 
     <div id="toast" class="toast">Product Added & QR Generated!</div>
@@ -107,6 +111,11 @@
                 <div class="form-group">
                     <label>Price (Formatted with commas)</label>
                     <input type="text" id="p-price" placeholder="1,20,000" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Staff Lowest Price (Hidden from customers)</label>
+                    <input type="text" id="p-sales-price" placeholder="1,15,000" required>
                 </div>
 
                 <div class="form-group">
@@ -147,6 +156,7 @@
                 name: document.getElementById('p-name').value.trim(),
                 brand: document.getElementById('p-brand').value.trim(),
                 price: document.getElementById('p-price').value.trim(),
+                salespersonPrice: document.getElementById('p-sales-price').value.trim(),
                 image: document.getElementById('p-image').value.trim(),
                 warranty: document.getElementById('p-warranty').value.trim(),
                 features: featuresArray,
@@ -180,6 +190,28 @@
                 alert("Error connecting to server. Is `server.py` running?");
             } finally {
                 btn.textContent = "Add Product & Generate QR";
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('publish-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('publish-btn');
+            btn.innerHTML = "<span>⏳ Publishing...</span>";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/publish', { method: 'POST' });
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Success! Your changes are now live on the internet.");
+                } else {
+                    alert("Failed to publish: " + result.message);
+                }
+            } catch (e) {
+                alert("Error connecting to server to publish.");
+            } finally {
+                btn.innerHTML = "<span>🚀 Publish to Live Site</span>";
                 btn.disabled = false;
             }
         });

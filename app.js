@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Animate out loader and animate in content
         loader.classList.add('hidden');
         productDetails.classList.remove('hidden');
-        
+
         // Slight delay for animation to feel natural
         setTimeout(() => {
             productDetails.classList.add('visible');
@@ -51,6 +51,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('product-name').textContent = product.name;
         document.getElementById('product-price').textContent = product.price;
         document.getElementById('product-warranty').textContent = product.warranty;
+
+        // Salesperson Mode Check
+        if (localStorage.getItem('isSalesperson') === 'true') {
+            const infoCard = document.querySelector('.product-info-card');
+            const staffPanel = document.createElement('div');
+
+            // Get lowest price or default
+            const lowestPrice = product.salespersonPrice || "Not defined";
+
+            staffPanel.innerHTML = `
+                <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 0.5rem; padding: 1rem; margin-top: 1.5rem;">
+                    <h4 style="color: #fca5a5; margin-bottom: 0.25rem; font-size: 0.8rem; text-transform: uppercase;">STAFF ONLY: Lowest Walkaway Price</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #ef4444;">₹${lowestPrice}</div>
+                    <p style="font-size: 0.75rem; color: #fca5a5; margin-top: 0.25rem;">Do not show this to the customer.</p>
+                </div>
+            `;
+            infoCard.appendChild(staffPanel);
+        }
 
         // Populate Features
         const featuresContainer = document.getElementById('product-features');

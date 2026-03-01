@@ -57,7 +57,7 @@ def generate_qrs(custom_base_url=None):
 
     for product_id, product_data in products.items():
         name = product_data.get('name', 'Product')
-        product_url = f"{base_url}/?id={product_id}"
+        product_url = f"{base_url}/product.html?id={product_id}"
         
         # Generate QR
         qr = qrcode.QRCode(
